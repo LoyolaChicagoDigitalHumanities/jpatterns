@@ -23,8 +23,22 @@ m7_chords=[]
 # Support functions
 
 # duration here is 1, 2, 4, etc. (for whole, half, quarter)
-def get_lilypond_major_chords(duration):
-	return ' '.join([ chord + str(duration) for chord in m_chords])
+
+# This may have to be rewritten. It seems like each pattern has 
+#  - chord that takes entire measure
+#  - chord spanning multiple measures (easy)
+#  - two chords in a measure
+# Duration is usually a certain number of quarter notes
+# problem: Lilypond can't seem to have irregular durations, at least not easily.
+# So.... We can just specify the multiplier and fill with "spacer rests"
+# See invisible rests: http://www.lilypond.org/doc/v2.16/Documentation/notation/writing-rests
+#
+
+def get_lilypond_major_chords(duration, spacer_rest=0):
+    if spacer_rest:
+    	return ' '.join([ chord + str(duration) + " s" + str(spacer_rest) for chord in m_chords])
+    else:
+        return ' '.join([ chord + str(duration) for chord in m_chords])
 
 def respell_notes(notes, key):
 	how_to_spell = respellings[key]
@@ -59,3 +73,18 @@ quarter = Duration(1, 4)
 half = Duration(1, 2)
 whole = Duration(1, 1)
 
+def get_lilypond_file(score, title, composer):
+    r'''Makes LilyPond file.
+    '''
+
+    lily = lilypondfiletools.make_basic_lilypond_file(score)
+    lily_title = markuptools.Markup(r'\bold \sans "%s"' % title)
+    lily_composer = schemetools.Scheme(composer)
+
+    lily.global_staff_size = 12
+    lily.header_block.title = lily_title
+    lily.header_block.composer = lily_composer
+    lily.layout_block.ragged_right = True
+    lily.paper_block.markup_system_spacing__basic_distance = 8
+    lily.paper_block.paper_width = 180
+    return lily
