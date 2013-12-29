@@ -34,11 +34,29 @@ m7_chords=[]
 # See invisible rests: http://www.lilypond.org/doc/v2.16/Documentation/notation/writing-rests
 #
 
-def get_lilypond_major_chords(duration, spacer_rest=0):
-    if spacer_rest:
-    	return ' '.join([ chord + str(duration) + " s" + str(spacer_rest) for chord in m_chords])
+
+def linear():
+    for i in range(0, 12):
+        yield i
+
+def fifths():
+    for i in range(0, 12):
+        yield 5*i % 12
+
+def get_lilypond_major_chords(duration, spacer_rest=0, iterate=linear):
+
+    # This is Lilyponds way of having a rest without generating a rest symbol.
+    # In the case of a Lilypond chord, this means a chord will not be displayed on that beat.
+    if spacer_rest > 0:
+        spacer = " s%d" % spacer_rest
     else:
-        return ' '.join([ chord + str(duration) for chord in m_chords])
+        spacer = ""
+
+    key_iterator = iterate()
+
+    return ' '.join([ m_chords[i] + str(duration) + spacer for i in key_iterator])
+
+
 
 def respell_notes(notes, key):
 	how_to_spell = respellings[key]
