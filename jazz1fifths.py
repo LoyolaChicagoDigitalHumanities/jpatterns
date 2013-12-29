@@ -42,10 +42,8 @@ def title():
 def composer():
     return "Jerry Greene et al"
 
-def main():
-    lilypond_file = common.get_lilypond_file(get_score(), title(), composer())
-    show(lilypond_file)
+def filename():
+    return "jazz3fifths.pdf"
 
 if __name__ == '__main__':
-    main()
-
+    common.main( get_score(), title(), composer(), filename())
