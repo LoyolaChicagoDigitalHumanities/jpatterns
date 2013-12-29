@@ -60,13 +60,13 @@ def get_lilypond_major_chords(duration, spacer_rest=0, iterate=linear):
 
 
 def respell_notes(notes, key):
-	how_to_spell = respellings[key]
-	if how_to_spell == flats:
-		respell_as_flats(notes)
-	elif how_to_spell == sharps:
-		respell_as_sharps(notes)
-	else:
-		pass
+    how_to_spell = respellings[key]
+    if how_to_spell == flats:
+        respell_as_flats(notes)
+    elif how_to_spell == sharps:
+        respell_as_sharps(notes)
+    else:
+        pass
 
 def respell_as_flats(notes):
     for note in notes:
@@ -83,7 +83,7 @@ def respell_as_sharps(notes):
             note.written_pitch = written_pitch.respell_with_sharps()
 
 def transpose(pitch_delta):
-	return lambda x : x + pitch_delta
+    return lambda x : x + pitch_delta
 
 from abjad import *
 
