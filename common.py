@@ -80,7 +80,8 @@ def get_lilypond_file(score, title, composer):
     lily = lilypondfiletools.make_basic_lilypond_file(score)
     lily_title = markuptools.Markup(r'\bold \sans "%s"' % title)
     lily_composer = schemetools.Scheme(composer)
-
+    print(lily_title)
+    print(lily_composer)
     lily.global_staff_size = 12
     lily.header_block.title = lily_title
     lily.header_block.composer = lily_composer

@@ -52,7 +52,7 @@ def title():
     return "Jazz Pattern 3"
 
 def composer():
-    return "Unknown"
+    return "Jerry Greene et al"
 
 def main():
     lilypond_file = common.get_lilypond_file(get_score(), title(), composer())
