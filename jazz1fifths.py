@@ -3,14 +3,11 @@ from abjad import *
 
 import common
 
-# I think Abjad had some change where notetools was removed...now scoretools, ok. :)
-notetools = scoretools
-
 def jazz1(pitch_delta=0):
     transpose = common.transpose(pitch_delta)
     pitches = map(transpose, [0, 4, 7, 12, 7, 4, 0])
     durations = [common.eighth] * 3 + [common.eighth] * 3 + [common.half]
-    notes = notetools.make_notes(pitches, durations)
+    notes = scoretools.make_notes(pitches, durations)
 
     key=pitches[0]
     common.respell_notes(notes, key)
