@@ -39,9 +39,8 @@ def title():
 def composer():
     return "Jerry Greene et al"
 
-def filename():
-    return "jazz1.pdf"
-
 if __name__ == '__main__':
-    common.main( get_score(), title(), composer(), filename())
+    common.main( get_score(), title(), composer(), 'jazz1.pdf')
+    common.main( get_score(), title(), composer(), 'jazz1.midi')
+
 

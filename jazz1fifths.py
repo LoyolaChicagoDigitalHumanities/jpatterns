@@ -43,4 +43,5 @@ def filename():
     return "jazz3fifths.pdf"
 
 if __name__ == '__main__':
-    common.main( get_score(), title(), composer(), filename())
+    common.main( get_score(), title(), composer(), 'jazz1fifths.pdf')
+    common.main( get_score(), title(), composer(), 'jazz1fifths.midi')

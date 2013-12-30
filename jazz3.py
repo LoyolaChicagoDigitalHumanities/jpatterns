@@ -23,21 +23,21 @@ def pattern3(pitch_delta=0):
 def get_score():
     notes = []
     note_count = 0
-    slurs = []
+    ties = []
     for i in range(0, 12):
         p3 = pattern3(i)
         notes = notes + p3
-        slurs.append( (note_count+3, note_count+4) )
-        slurs.append( (note_count+7, note_count+8) )
+        ties.append( (note_count+3, note_count+4) )
+        ties.append( (note_count+7, note_count+8) )
         note_count += len(p3)
 
     # The parameter (1) here means whole note for each chord symbol (to keep things general for other patterns)
     chord_string = common.get_lilypond_major_chords(1, 4)
     staff = Staff(notes)
 
-    for (slur_start, slur_end) in slurs:
-        slur = spannertools.Slur()
-        attach(slur, staff[slur_start:slur_end+1])
+    for (tie_start, tie_end) in ties:
+        tie = spannertools.Tie()
+        attach(tie, staff[tie_start:tie_end+1])
 
     chords = Staff(chord_string, context_name='ChordNames')
     score = Score([chords, staff])
@@ -56,4 +56,5 @@ def filename():
     return "jazz3.pdf"
 
 if __name__ == '__main__':
-    common.main( get_score(), title(), composer(), filename())
+    common.main( get_score(), title(), composer(), 'jazz3.pdf')
+    common.main( get_score(), title(), composer(), 'jazz3.midi')

@@ -114,7 +114,9 @@ def save(abjad_object, filename):
         if ext == '.pdf':
             persist(abjad_object).as_pdf(write_path)
         elif ext == '.ly':
-            persist(abjad_object).as_pdf(write_path)
+            persist(abjad_object).as_ly(write_path)
+        elif ext == '.midi':
+            persist(abjad_object).as_midi(write_path)
         else:
             raise UnsupportedExtension(ext)
     else:
