@@ -141,4 +141,4 @@ def get_lilypond_file(score, title, composer):
 def main(score, title, composer, filename):
     lilypond_file = get_lilypond_file(score, title, composer)
     save(lilypond_file, filename)
-
+    #show(lilypond_file)
