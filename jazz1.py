@@ -1,36 +1,41 @@
 import sys
 
 from abjad import *
+import common, sideman
 
-import common
 
-def jazz1(pitch_delta=0):
-    transpose = common.transpose(pitch_delta)
-    pitches = map(transpose, [0, 4, 7, 12, 7, 4, 0])
+def get_pattern1(jazz_scale):
+    pitches = jazz_scale.get_named_pitches([1, 3, 5, 8, 5, 3, 1])
     durations = [common.eighth] * 3 + [common.eighth] * 3 + [common.half]
     notes = scoretools.make_notes(pitches, durations)
 
-    key=pitches[0]
-    common.respell_notes(notes, key)
     t1_notes = notes[0:3]
     t2_notes = notes[3:6]
-    landing_note = notes[6:]
+    last_note = notes[6]
     t1 = Tuplet(Fraction(2, 3), t1_notes)
     t2 = Tuplet(Fraction(2, 3), t2_notes)
-    return [t1, t2] + landing_note
+    measure = Measure((4, 4))
+    measure.append(t1)
+    measure.append(t2)
+    measure.append(last_note)
+    return measure
 
+def get_pattern1_chord_measure(jazz_scale):
+    pitches = jazz_scale.get_chord_as_named([1 ,3, 5])
+    measure = Measure( (4, 4))
+    chord = Chord(pitches, (4, 4))
+    measure.append(chord)
+    return measure
 
 # This pattern is linear in all 12 keys (e.g. c', df', d', ...)
 def get_score():
-    notes = []
-    for i in range(0, 12):
-        notes = notes + jazz1(i)
-
-    # The parameter (1) here means whole note for each chord symbol (to keep things general for other patterns)
-    chord_string = common.get_lilypond_major_chords(1)
-    staff = Staff(notes)
-    chords = Staff(chord_string, context_name='ChordNames')
-    score = Score([chords, staff])
+    treble_pattern = Staff()
+    chords = Staff(context_name='ChordNames')
+    for key in range(0, 12):
+        jazz_scale = sideman.JazzScale(key)
+        treble_pattern.append( get_pattern1(jazz_scale) )
+        chords.append( get_pattern1_chord_measure(jazz_scale) )
+    score = Score([chords, treble_pattern])
     return score
 
 def title():
@@ -40,6 +45,7 @@ def composer():
     return "Jerry Greene et al"
 
 if __name__ == '__main__':
+    score = get_score()
     common.main( get_score(), title(), composer(), 'jazz1.pdf')
     common.main( get_score(), title(), composer(), 'jazz1.midi')
 

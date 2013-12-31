@@ -113,6 +113,9 @@ class JazzScale(object):
         assert n > 0 and n < 16
         return self.pitches[n-1]
 
+    def get_named_pitches(self, list_of_numbers):
+        return [ self.get_named_pitch(i) for i in list_of_numbers ]
+
 def linear():
     for i in range(0, 12):
         yield i
