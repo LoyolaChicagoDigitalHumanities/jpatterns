@@ -118,25 +118,40 @@ class JazzScale(object):
 
     # Interface Methods (users may also use set_major_mode/set_minor_mode)
 
-    def get_chord_as_numbered(self, pitch_list):
-        return [ self.get_numbered_pitch(i) for i in pitch_list]
+    # the get_chord*() methods ensure uniqueness of the numbers provided
 
-    def get_chord_as_named(self, pitch_list):
-        return [ self.get_named_pitch(i) for i in pitch_list]
+    def get_unique_jazz_numbers(self, jazz_number_list):
+        jazz_number_list_unique = list(set(jazz_number_list))
+        jazz_number_list_unique.sort()
+        return jazz_number_list_unique
 
-    def get_chord_as_lilypond(self, pitch_list):
-        return "<%s>" % " ".join([ str(self.get_named_pitch(i)) for i in pitch_list])
+    def get_chord_as_numbered(self, jazz_number_list):
+        return [ self.get_numbered_pitch(i) for i in self.get_unique_jazz_numbers(jazz_number_list)]
+
+    def get_chord_as_named(self, jazz_number_list):
+        return [ self.get_pitch(i) for i in self.get_unique_jazz_numbers(jazz_number_list)]
+
+    def get_chord_as_lilypond(self, jazz_number_list):
+        return "<%s>" % " ".join([ str(self.get_pitch(i)) for i in self.get_unique_jazz_numbers(jazz_number_list)])
+
+    # the get_pitches*() methods do not require uniqueness
 
     def get_numbered_pitch(self, n):
         assert n > 0 and n < 16
         return self.scale[n-1]
 
-    def get_named_pitch(self, n):
-        assert n > 0 and n < 16
-        return self.pitches[n-1]
+    def get_pitches(self, jazz_number_list):
+        return [ self.get_numbered_pitch(i) for i in jazz_number_list]
 
-    def get_named_pitches(self, list_of_numbers):
-        return [ self.get_named_pitch(i) for i in list_of_numbers ]
+    def get_pitch(self, jazz_number):
+        assert jazz_number > 0 and jazz_number < 16
+        return self.pitches[jazz_number-1]
+
+    def get_pitches_as_named(self, jazz_number_list):
+        return [ self.get_pitch(i) for i in jazz_number_list ]
+
+    # TODO: "deprecated" name used in examples...will clean up later
+    get_named_pitches = get_pitches_as_named
 
 class TestJazz(unittest.TestCase):
     def setUp(self):
@@ -160,6 +175,38 @@ class TestJazz(unittest.TestCase):
         chord = self.c.get_chord_as_lilypond([1, 3, 5])
         assert chord == "<c' e' g'>"
 
+    def test_get_chord_group(self):
+
+        c1 = self.c.get_chord_as_numbered([1, 3, 5, 7, 3, 1])   # should only include 1,3,5,7
+        assert c1 == [0, 4, 7, 11]
+
+        c2 = self.c.get_chord_as_named([1, 3, 5, 7, 7, 3, 1])
+        print(c2)
+        assert c2 == [ NamedPitch("c'"), NamedPitch("e'"), NamedPitch("g'"), NamedPitch("b'")]
+
+        c3 = self.c.get_chord_as_lilypond([1, 3, 5, 7, 7, 3, 1])
+        assert c3 == "<c' e' g' b'>"
+
+    def test_get_pitches_group(self):
+
+        simple_jazz_pattern = [1, 3, 5, 7, 7, 5, 3, 1, 1]       # used by jazz1.py :-)
+        c_pitches = [0, 4, 7, 11, 11, 7, 4, 0, 0]
+
+        c1 = self.c.get_pitches(simple_jazz_pattern)   # should only include 1,3,5,7
+        assert c1 == c_pitches
+
+        c2 = self.c.get_pitches_as_named(simple_jazz_pattern)
+        assert c2 == [NamedPitch("c'"), NamedPitch("e'"), NamedPitch("g'"), NamedPitch("b'"), 
+                      NamedPitch("b'"), NamedPitch("g'"), NamedPitch("e'"), NamedPitch("c'"), NamedPitch("c'")]
+
+        # This is essentially a spelling test to ensure the pitches are spelled the way they should for this (flat) scale
+        dflat1 = self.dflat.get_pitches_as_named(simple_jazz_pattern)
+        assert dflat1 == [NamedPitch("df'"), NamedPitch("f'"), NamedPitch("af'"), NamedPitch("c''"),
+                        NamedPitch("c''"), NamedPitch("af'"), NamedPitch("f'"), NamedPitch("df'"), NamedPitch("df'")]
+
+    def get_chord_as_lilypond(self, pitch_list):
+        return "<%s>" % " ".join([ str(self.get_pitch(i)) for i in self.get_chord_as_numbered(jazz_number_list)])
+
     def test_flat_spelling(self):
         self.dflat.set_spelling_flats()
 
@@ -168,6 +215,7 @@ class TestJazz(unittest.TestCase):
             NamedPitch("c''"), NamedPitch("df''"), NamedPitch("ef''"), 
             NamedPitch("f''"), NamedPitch("gf''"), NamedPitch("af''"), 
             NamedPitch("bf''"), NamedPitch("c'''"), NamedPitch("df'''")]
+
         assert self.dflat.pitches == pitches_expected
 
     def test_sharp_spelling(self):
@@ -178,6 +226,7 @@ class TestJazz(unittest.TestCase):
             NamedPitch("c''"), NamedPitch("cs''"), NamedPitch("ds''"), 
             NamedPitch("f''"), NamedPitch("fs''"), NamedPitch("gs''"), 
             NamedPitch("as''"), NamedPitch("c'''"), NamedPitch("cs'''")]
+
         assert self.csharp.pitches == pitches_expected
 
 if __name__ == '__main__':
