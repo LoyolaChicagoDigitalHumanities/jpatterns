@@ -3,8 +3,6 @@ from abjad import *
 
 import common, sideman
 
-import pprint
-
 # This is a 5/4 pattern!
 
 def get_pattern3(jazz_scale):
