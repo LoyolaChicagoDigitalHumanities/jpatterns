@@ -9,18 +9,40 @@ from abjad import *
 import unittest
 import os, os.path
 
+#
+# These constants are the names associated with accidentals in Abjad.
+#
+
 flats = 'flat'
 sharps = 'sharp'
 naturals = 'naturals'
+
+#
+# Standard durations needed by most patterns. 
+#
+
 eighth = Duration(1, 8)
 quarter = Duration(1, 4)
 half = Duration(1, 2)
 whole = Duration(1, 1)
 
+
+#
+# Iterators for walking in key order (e.g. 0, 1, 2, ...) or 
+# by the circle of fifths (e.g. 0, 5, 10, 3, 8, 1, ...)
+#
+
+def keys_in_order():
+    for i in range(0, 12):
+        yield i
+
+def keys_in_fifths():
+    for i in range(0, 12):
+        yield 5*i % 12
+
 class JazzScale(object):
     KEY_SPELLINGS = [naturals, flats, sharps, flats, sharps, flats, flats, 
        sharps, flats, sharps, flats, sharps]
-
 
     def __init__(self, key=0):
         self.key = key                         # should be 0...11
@@ -115,74 +137,6 @@ class JazzScale(object):
 
     def get_named_pitches(self, list_of_numbers):
         return [ self.get_named_pitch(i) for i in list_of_numbers ]
-
-def linear():
-    for i in range(0, 12):
-        yield i
-
-def fifths():
-    for i in range(0, 12):
-        yield 5*i % 12
-
-def get_lilypond_major_chords(duration, spacer_rest=0, iterate=linear):
-
-    # This is Lilyponds way of having a rest without generating a rest symbol.
-    # In the case of a Lilypond chord, this means a chord will not be displayed on that beat.
-    if spacer_rest > 0:
-        spacer = " s%d" % spacer_rest
-    else:
-        spacer = ""
-
-    key_iterator = iterate()
-
-    return ' '.join([ m_chords[i] + str(duration) + spacer for i in key_iterator])
-
-def respell_notes(notes, key):
-    how_to_spell = respellings[key]
-    if how_to_spell == flats:
-        respell_as_flats(notes)
-    elif how_to_spell == sharps:
-        respell_as_sharps(notes)
-    else:
-        pass
-
-def respell_as_flats(notes):
-    for note in notes:
-        written_pitch = note.written_pitch
-        accidental_name = written_pitch.accidental.name
-        if accidental_name == 'sharp':
-            note.written_pitch = written_pitch.respell_with_flats()
-
-def respell_as_sharps(notes):
-    for note in notes:
-        written_pitch = note.written_pitch
-        accidental_name = written_pitch.accidental.name
-        if accidental_name == 'flat':
-            note.written_pitch = written_pitch.respell_with_sharps()
-
-def transpose(pitch_delta):
-    return lambda x : x + pitch_delta
-
-def get_chords(jazz_number_list):
-    chords = []
-    js = JazzScale()
-    for i in range(0, 12):
-        js.set_key(i)
-        chords.append( js.get_chord_as_lilypond(jazz_number_list))
-    return chords
-
-def get_m_chords():
-    return get_chords([1, 3, 5])
-
-def get_m6_chords():
-    return get_chords([1, 3, 5, 6])
-
-def get_m7_chords():
-    return get_chords([1, 3, 5, 7])
-
-def get_m9_chords():
-    return get_chords([1, 3, 5, 7, 9])
-
 
 class TestJazz(unittest.TestCase):
     def setUp(self):

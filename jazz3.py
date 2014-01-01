@@ -1,49 +1,45 @@
 import sys
 from abjad import *
 
-import common
+import common, sideman
 
-# This pattern generates a 5/4 measure's worth of notes
+import pprint
 
-def pattern3(pitch_delta=0):
-    transpose = common.transpose(pitch_delta)
-    pitches = map(transpose, [0, 4, 7, 12, 12, 7, 4, 0])
-    durations = [common.eighth] * 4 + [common.eighth] * 4 + [common.quarter]
+# This is a 5/4 pattern!
+
+def get_pattern3(jazz_scale):
+    pitches = jazz_scale.get_named_pitches([1, 3, 5, 8, 8, 5, 3, 1, 1])
+    durations = [sideman.eighth] * 4 + [sideman.eighth] * 4 + [sideman.quarter]
     notes = scoretools.make_notes(pitches, durations)
 
-    key=pitches[0]
-    common.respell_notes(notes, key)
-    t1_notes = notes[0:3]
-    t2_notes = notes[3:6]
-    landing_note = notes[6:]
-    return t1_notes + t2_notes + landing_note
+    measure = Measure((5, 4))
+    for note in notes: 
+        measure.append(note)
+    tie = spannertools.Tie()
+    attach(tie, measure[3:5])
+    tie = spannertools.Tie()
+    attach(tie, measure[7:9])
+    return measure
 
+def get_pattern3_chord_measure(jazz_scale):
+    pitches = jazz_scale.get_chord_as_named([1 ,3, 5])
+    measure = Measure((5, 4))
+    chord = Chord(pitches, (4, 4))
+    measure.append(chord)
+    multiplier = Multiplier(measure.time_signature.duration)
+    attach(multiplier, chord)
+    return measure
 
-# This pattern is linear in all 12 keys (e.g. c', df', d', ...)
 def get_score():
-    notes = []
-    note_count = 0
-    ties = []
-    for i in range(0, 12):
-        p3 = pattern3(i)
-        notes = notes + p3
-        ties.append( (note_count+3, note_count+4) )
-        ties.append( (note_count+7, note_count+8) )
-        note_count += len(p3)
+    treble_pattern = Staff()
+    chords = Staff(context_name='ChordNames')
 
-    # The parameter (1) here means whole note for each chord symbol (to keep things general for other patterns)
-    chord_string = common.get_lilypond_major_chords(1, 4)
-    staff = Staff(notes)
+    for key in sideman.keys_in_order():
+        jazz_scale = sideman.JazzScale(key)
+        treble_pattern.append( get_pattern3(jazz_scale) )
+        chords.append( get_pattern3_chord_measure(jazz_scale) )
 
-    for (tie_start, tie_end) in ties:
-        tie = spannertools.Tie()
-        attach(tie, staff[tie_start:tie_end+1])
-
-    chords = Staff(chord_string, context_name='ChordNames')
-    score = Score([chords, staff])
-    time_signature = indicatortools.TimeSignature((5, 4))
-    attach(time_signature, staff)
-    attach(time_signature, chords)
+    score = Score([chords, treble_pattern])
     return score
 
 def title():

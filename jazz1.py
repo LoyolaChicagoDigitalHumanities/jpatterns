@@ -3,10 +3,9 @@ import sys
 from abjad import *
 import common, sideman
 
-
 def get_pattern1(jazz_scale):
     pitches = jazz_scale.get_named_pitches([1, 3, 5, 8, 5, 3, 1])
-    durations = [common.eighth] * 3 + [common.eighth] * 3 + [common.half]
+    durations = [sideman.eighth] * 3 + [sideman.eighth] * 3 + [sideman.half]
     notes = scoretools.make_notes(pitches, durations)
 
     t1_notes = notes[0:3]
@@ -27,11 +26,10 @@ def get_pattern1_chord_measure(jazz_scale):
     measure.append(chord)
     return measure
 
-# This pattern is linear in all 12 keys (e.g. c', df', d', ...)
 def get_score():
     treble_pattern = Staff()
     chords = Staff(context_name='ChordNames')
-    for key in range(0, 12):
+    for key in sideman.keys_in_order():
         jazz_scale = sideman.JazzScale(key)
         treble_pattern.append( get_pattern1(jazz_scale) )
         chords.append( get_pattern1_chord_measure(jazz_scale) )
