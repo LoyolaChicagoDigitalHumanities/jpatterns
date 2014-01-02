@@ -34,13 +34,15 @@ def get_score():
         chords.append( get_pattern5_chord_measure(jazz_scale) )
 
     score = Score([chords, treble_pattern])
+    tempo = Tempo(Duration(1, 4), (100, 160))
+    attach(tempo, treble_pattern)
     return score
 
 def title():
     return "Jazz Pattern 5"
 
 def composer():
-    return "Jerry Greene et al"
+    return "Jerry Greene et al, Thiruvathukal"
 
 def pdf():
     return "jazz5.pdf"

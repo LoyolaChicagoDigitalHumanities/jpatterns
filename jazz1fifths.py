@@ -33,6 +33,8 @@ def get_score():
         treble_pattern.append( get_pattern1(jazz_scale) )
         chords.append( get_pattern1_chord_measure(jazz_scale) )
     score = Score([chords, treble_pattern])
+    tempo = Tempo(Duration(1, 4), (60, 120))
+    attach(tempo, treble_pattern)
     return score
 
 def title():
