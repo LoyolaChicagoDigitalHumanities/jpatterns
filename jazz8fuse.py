@@ -40,15 +40,15 @@ def get_score():
 
     # Merge all the pairs of 2/4 measures into 4/4 measures
 
-    parts = sequencetools.partition_sequence_by_counts(treble_pattern[:], [2], cyclic=True)
-    for part in parts:
-        mutate(part).fuse()
+    # TODO: Can probably just put a loop over both staves...
+    
+    staves = [chords, treble_pattern]
+    for staff in staves:
+        parts = sequencetools.partition_sequence_by_counts(staff[:], [2], cyclic=True)
+        for part in parts:
+            mutate(part).fuse()
 
-    parts = sequencetools.partition_sequence_by_counts(chords[:], [2], cyclic=True)
-    for part in parts:
-        mutate(part).fuse()
-
-    tempo = Tempo(Duration(1, 4), 100)
+    tempo = Tempo(Duration(1, 4), (100,138))
     attach(tempo, treble_pattern)
     score = Score([chords, treble_pattern])
     return score
