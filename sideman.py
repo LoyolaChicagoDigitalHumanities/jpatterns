@@ -143,12 +143,57 @@ class JazzScale(object):
     def get_pitches(self, jazz_number_list):
         return [ self.get_numbered_pitch(i) for i in jazz_number_list]
 
+
     def get_pitch(self, jazz_number):
         assert jazz_number > 0 and jazz_number < 16
         return self.pitches[jazz_number-1]
 
+    def get_altered_pitch(self, jazz_number, alteration, octave_transposition):
+        print("in get_altered_pitch", jazz_number, alteration, octave_transposition)
+        computed_pitch = self.get_pitch(jazz_number)
+        if alteration == None:
+            print("alteration", alteration, " octave ", octave_transposition)
+            if octave_transposition == 0:
+                return computed_pitch
+            return NamedPitch( computed_pitch.pitch_name, computed_pitch.octave_number + octave_transposition)
+
+        new_pitch_name = computed_pitch.pitch_class_name
+        print("before", new_pitch_name, alteration, octave_transposition)
+        if alteration in ['f', 's']:
+            new_pitch_name = new_pitch_name + alteration
+        print("after",new_pitch_name, alteration, octave_transposition)
+        return NamedPitch(new_pitch_name, computed_pitch.octave_number + octave_transposition)
+
+
     def get_pitches_as_named(self, jazz_number_list):
         return [ self.get_pitch(i) for i in jazz_number_list ]
+
+    def get_altered_pitches_as_named(self, pattern):
+        regex = re.compile('(-+|\++)?(\d+)(f|s)?')
+        pitches = []
+        for x in pattern:
+            alteration = None
+            octave_transposition = 0
+            if isinstance(x, int):
+                scale_degree = abs(x)
+                assert 1 <= scale_degree and scale_degree <= 15
+                if x < 0:
+                    octave_transposition -= 1
+
+            elif isinstance(x, str):
+                octaves, scale_degree, alteration = regex.match(x).groups()
+                print("alteration %s degree %s octave %s" % (alteration, scale_degree, octaves))
+                if isinstance(octaves, str):
+                    if octaves.startswith('-'):
+                        octave_transposition = -1 * len(octaves)
+                    else:
+                        octave_transposition = len(octaves)
+                scale_degree = int(scale_degree)
+
+            print("alteration %s degree %s octave %s" % (alteration, scale_degree, octave_transposition))
+            pitches.append(self.get_altered_pitch(scale_degree, alteration, octave_transposition))
+
+        return pitches
 
     # TODO: "deprecated" name used in examples...will clean up later
     get_named_pitches = get_pitches_as_named
