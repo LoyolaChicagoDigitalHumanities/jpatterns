@@ -26,8 +26,8 @@ def get_pattern_n77_chords(scale):
     measure = Measure((8, 4))
     chord = Chord(pitches, (4, 4))
     measure.append(chord)
-    chord = Chord(pitches, (4, 4))
-    measure.append(chord)
+    multiplier = Multiplier(measure.time_signature.duration)
+    attach(multiplier, chord)
     return measure
 
 def get_score():
@@ -41,6 +41,11 @@ def get_score():
         treble_pattern.append( pattern_measure )
         chords.append( chord_measure )
     
+    mutate(treble_pattern[:]).split([(4, 4)], cyclic=True)
+    #mutate(chords[:]).split([(4, 4)], cyclic=True)
+
+
+
 #    staves = [chords, treble_pattern]
 #    for staff in staves:
 #        parts = sequencetools.partition_sequence_by_counts(staff[:], [2], cyclic=True)
