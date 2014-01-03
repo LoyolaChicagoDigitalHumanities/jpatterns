@@ -159,9 +159,16 @@ class JazzScale(object):
 
         new_pitch_name = computed_pitch.pitch_class_name
         print("before", new_pitch_name, alteration, octave_transposition)
-        if alteration in ['f', 's']:
-            new_pitch_name = new_pitch_name + alteration
-        print("after",new_pitch_name, alteration, octave_transposition)
+        alterations = ['f', 's']
+        for i in range(0, len(alterations)):
+            if alteration == alterations[i]:
+                if new_pitch_name.endswith(alterations[(i+1)%2]):
+                    if len(new_pitch_name) > 1:  # a flat-sharp or sharp-flat is removed
+                        new_pitch_name = new_pitch_name[0:-1]
+                else:
+                    new_pitch_name = new_pitch_name + alteration
+            break
+
         return NamedPitch(new_pitch_name, computed_pitch.octave_number + octave_transposition)
 
 
