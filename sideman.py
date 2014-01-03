@@ -7,7 +7,7 @@
 from abjad import *
 
 import unittest
-import os, os.path
+import os, os.path, re
 
 #
 # These constants are the names associated with accidentals in Abjad.
@@ -228,6 +228,80 @@ class TestJazz(unittest.TestCase):
             NamedPitch("as''"), NamedPitch("c'''"), NamedPitch("cs'''")]
 
         assert self.csharp.pitches == pitches_expected
+
+KEYS = ['c', 'df', 'd', 'ef', 'e', 'f', 'gf', 'g', 'af', 'a', 'bf', 'b']
+
+def keys_in_order():
+    for i in range(0, 12):
+        yield i
+
+def keys_in_fifths():
+    for i in range(0, 12):
+        yield 5*i % 12
+
+def keynames_in_order():
+    assert len(KEYS) == 12
+    for key in KEYS:
+        yield key
+
+def keynames_in_fifths():
+    assert len(KEYS) == 12
+    for i in range(0, len(KEYS)):
+        yield KEYS[5*i % 12]
+
+def get_scale(key, mode):
+    return tonalanalysistools.Scale(key, mode)
+
+
+#
+# Thanks to Josiah for helping write this
+# I made a few modifications to support 1...15
+#
+
+def get_pattern_pitches(pattern, scale):
+    regex = re.compile('(-+|\++)?([\d+])(f|s)?')
+    pitches = []
+    for x in pattern:
+        alteration = None
+        octave_transposition = 0
+        if isinstance(x, int):
+            scale_degree = abs(x)
+            assert 1 <= scale_degree and scale_degree <= 15
+            if x < 0:
+                octave_transposition -= 1
+
+        elif isinstance(x, str):
+            octaves, scale_degree, alteration = regex.match(x).groups()
+            if isinstance(octaves, str):
+                if octaves.startswith('-'):
+                    octave_transposition = -1 * len(octaves)
+                else:
+                    octave_transposition = len(octaves)
+            scale_degree = int(scale_degree)
+            if alteration == 's':
+                alteration = 'sharp'
+            elif alteration == 'f':
+                alteration = 'flat'
+
+        if scale_degree >= 8:
+            scale_degree = scale_degree - 8 + 1
+            octave_transposition += 1
+
+        print((scale_degree, octave_transposition, alteration))
+        scale_degree = tonalanalysistools.ScaleDegree(alteration, scale_degree)
+        pitch_class = scale.scale_degree_to_named_pitch_class(scale_degree)
+        pitch = pitchtools.NamedPitch(pitch_class, 4 + octave_transposition)
+        pitches.append(pitch)
+    return pitches
+
+def get_chord_pitches(pattern, scale):
+    pitch_list = list(set(pattern))
+    pitch_list.sort()
+    return get_pattern_pitches(pattern, scale)
+
+def get_chord_lilypond(pattern, scale):
+    pitch_list = get_chord_pitches(pattern, scale)
+    return '<' + ' '.join([ str(pitch) for pitch in pitch_list]) + '>'
 
 if __name__ == '__main__':
     unittest.main()
