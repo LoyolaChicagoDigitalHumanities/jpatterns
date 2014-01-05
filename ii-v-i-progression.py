@@ -11,7 +11,7 @@ import common, sideman
 #
 
 def get_pattern_ii_v_i(scale):
-    pitches = scale.get_altered_pitches_as_named([2, 3, 4, "4s", 5, 4, 3, 2, 1, 3, 5, 7, 8, 5, 3])
+    pitches = scale.get_altered_pitches_as_named([2, 3, 4, "4s", 5, 4, 3, 2, 1, 3, 5, 7, 8, 7, 5, 3])
     durations = [sideman.eighth] * 16
     notes = scoretools.make_notes(pitches, durations)
 
