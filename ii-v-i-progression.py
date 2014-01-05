@@ -10,8 +10,8 @@ import common, sideman
 # I didn't figure out how to combine two Measure instances into a single one via Abjad
 #
 
-def get_pattern_n77(scale):
-    pitches = scale.get_altered_pitches_as_named([1, -7, 2, 1, 3, "2s", 4, 3, 5, "4s", 6, 5, 8, 7, 9, 8])
+def get_pattern_ii_v_i(scale):
+    pitches = scale.get_altered_pitches_as_named([2, 3, 4, "4s", 5, 4, 3, 2, 1, 3, 5, 7, 8, 5, 3])
     durations = [sideman.eighth] * 16
     notes = scoretools.make_notes(pitches, durations)
 
@@ -20,7 +20,7 @@ def get_pattern_n77(scale):
         measure.append(note)
     return measure
 
-def get_pattern_n77_chords(scale):
+def get_pattern_ii_v_i_chords(scale):
     pitches = scale.get_chord_as_named([1 ,3, 5])
     measure = Measure((8, 4))
     chord = Chord(pitches, (4, 4))
@@ -29,18 +29,33 @@ def get_pattern_n77_chords(scale):
     attach(multiplier, chord)
     return measure
 
+# TODO: Put this in bass cleff for piano version.
+# Should be a matter of transposing a couple of octaves down and using a bass clef staff.
+def get_pattern_ii_v_i_voicing(scale):
+    measure = Measure((8, 4))
+    ii_chord = Chord(scale.get_chord_as_named([2, 4, 6, 8]), (2, 4))
+    v_chord = Chord(scale.get_chord_as_named([2, 4, 5, 7]), (2, 4))
+    i_chord = Chord(scale.get_chord_as_named([1, 3, 5, 7]), (4, 4))
+    measure.append(ii_chord)
+    measure.append(v_chord)
+    measure.append(i_chord)
+    return measure
+
 def get_score():
     treble_pattern = Staff()
     chords = Staff(context_name='ChordNames')
-
-    for key in sideman.keys_in_fifths():
+    voicing = Staff()
+    for key in sideman.keys_for_ii_v_i_descending():
         scale = sideman.JazzScale(key)
-        pattern_measure = get_pattern_n77(scale)
-        chord_measure =get_pattern_n77_chords(scale)
+        pattern_measure = get_pattern_ii_v_i(scale)
+        chord_measure =get_pattern_ii_v_i_chords(scale)
+        voicing_measure = get_pattern_ii_v_i_voicing(scale)
         treble_pattern.append( pattern_measure )
         chords.append( chord_measure )
+        voicing.append(voicing_measure)
     
     mutate(treble_pattern[:]).split([(4, 4)], cyclic=True)
+    mutate(voicing[:]).split([(4, 4)], cyclic=True)
     #mutate(chords[:]).split([(4, 4)], cyclic=True)
 
 
@@ -55,20 +70,20 @@ def get_score():
     tempo = Tempo(Duration(1, 4), 100)
 
     attach(tempo, treble_pattern)
-    score = Score([chords, treble_pattern])
+    score = Score([chords, treble_pattern, voicing])
     return score
 
 def title():
-    return "Jazz Pattern 77"
+    return "II-V-I Progression"
 
 def composer():
-    return "Jerry Greene et al, Thiruvathukal"
+    return "Unknown"
 
 def pdf():
-    return "jazz77.pdf"
+    return "ii-v-i.pdf"
 
 def midi():
-    return "jazz77.midi"
+    return "ii-v-i.midi"
 
 if __name__ == '__main__':
     score = get_score()

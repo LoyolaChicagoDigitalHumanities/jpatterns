@@ -36,6 +36,10 @@ def keys_in_order():
     for i in range(0, 12):
         yield i
 
+def keys_for_ii_v_i_descending():
+    for i in [12, 10, 8, 6, 4, 2]:
+        yield i
+
 def keys_in_fifths():
     for i in range(0, 12):
         yield 5*i % 12
@@ -46,7 +50,7 @@ class JazzScale(object):
 
     def __init__(self, key=0):
         self.key = key                         # should be 0...11
-        self.spelling = JazzScale.KEY_SPELLINGS[self.key]     # this can be set by user.
+        self.spelling = JazzScale.KEY_SPELLINGS[self.key % 12]     # this can be set by user.
         self.set_major_mode()
 
     def set_spelling_sharps(self):
@@ -62,7 +66,7 @@ class JazzScale(object):
         self.respell()
 
     def reset_spelling(self):
-        self.spelling = KEY_SPELLINGS[self.key]
+        self.spelling = KEY_SPELLINGS[self.key % 12]
         self.respell()
 
     # Internal Methods
