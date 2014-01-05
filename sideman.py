@@ -48,7 +48,7 @@ class JazzScale(object):
     KEY_SPELLINGS = [naturals, flats, sharps, flats, sharps, flats, flats, 
        sharps, flats, sharps, flats, sharps]
 
-    def __init__(self, key=0):
+    def __init__(self, key=0, octave=0):
         self.key = key                         # should be 0...11
         self.spelling = JazzScale.KEY_SPELLINGS[self.key % 12]     # this can be set by user.
         self.set_major_mode()
