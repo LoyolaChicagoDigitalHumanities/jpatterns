@@ -153,10 +153,8 @@ class JazzScale(object):
         return self.pitches[jazz_number-1]
 
     def get_altered_pitch(self, jazz_number, alteration, octave_transposition):
-        #print("in get_altered_pitch", jazz_number, alteration, octave_transposition)
         computed_pitch = self.get_pitch(jazz_number)
         if alteration == None:
-            #print("alteration", alteration, " octave ", octave_transposition)
             if octave_transposition == 0:
                 return computed_pitch
             return NamedPitch( computed_pitch.pitch_name, computed_pitch.octave_number + octave_transposition)
@@ -191,7 +189,6 @@ class JazzScale(object):
 
             elif isinstance(x, str):
                 octaves, scale_degree, alteration = regex.match(x).groups()
-                #print("alteration %s degree %s octave %s" % (alteration, scale_degree, octaves))
                 if isinstance(octaves, str):
                     if octaves.startswith('-'):
                         octave_transposition = -1 * len(octaves)
@@ -199,7 +196,6 @@ class JazzScale(object):
                         octave_transposition = len(octaves)
                 scale_degree = int(scale_degree)
 
-            #print("alteration %s degree %s octave %s" % (alteration, scale_degree, octave_transposition))
             pitches.append(self.get_altered_pitch(scale_degree, alteration, octave_transposition))
 
         return pitches
@@ -235,7 +231,6 @@ class TestJazz(unittest.TestCase):
         assert c1 == [0, 4, 7, 11]
 
         c2 = self.c.get_chord_as_named([1, 3, 5, 7, 7, 3, 1])
-        print(c2)
         assert c2 == [ NamedPitch("c'"), NamedPitch("e'"), NamedPitch("g'"), NamedPitch("b'")]
 
         c3 = self.c.get_chord_as_lilypond([1, 3, 5, 7, 7, 3, 1])
@@ -341,7 +336,6 @@ def get_pattern_pitches(pattern, scale):
             scale_degree = scale_degree - 8 + 1
             octave_transposition += 1
 
-        print((scale_degree, octave_transposition, alteration))
         scale_degree = tonalanalysistools.ScaleDegree(alteration, scale_degree)
         pitch_class = scale.scale_degree_to_named_pitch_class(scale_degree)
         pitch = pitchtools.NamedPitch(pitch_class, 4 + octave_transposition)
