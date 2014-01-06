@@ -45,11 +45,12 @@ def composer():
     return "Jerry Greene et al, Thiruvathukal"
 
 def pdf():
-    return "jazz05.pdf"
+    return "jazz005.pdf"
 
 def midi():
-    return "jazz05.midi"
+    return "jazz005.midi"
 
 if __name__ == '__main__':
-    common.main( get_score(), title(), composer(), pdf())
-    common.main( get_score(), title(), composer(), midi())
+    score = get_score()
+    common.main( score, title(), composer(), pdf())
+    common.main( score, title(), composer(), midi())

@@ -65,10 +65,10 @@ def composer():
     return "Jerry Greene et al, Thiruvathukal"
 
 def pdf():
-    return "jazz77.pdf"
+    return "jazz077.pdf"
 
 def midi():
-    return "jazz77.midi"
+    return "jazz077.midi"
 
 if __name__ == '__main__':
     score = get_score()

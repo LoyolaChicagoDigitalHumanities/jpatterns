@@ -9,3 +9,5 @@ do
 	echo "Generating pattern "$py_file
 	python $py_file
 done
+
+python progression001.py

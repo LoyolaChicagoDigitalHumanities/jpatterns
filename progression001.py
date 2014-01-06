@@ -81,10 +81,10 @@ def composer():
     return "Not Specified"
 
 def pdf(key_name):
-    return "ii-v-i-%s.pdf" % key_name.lower()
+    return "progression001-%s.pdf" % key_name.lower()
 
 def midi(key_name):
-    return "ii-v-i-%s.midi" % key_name.lower()
+    return "progression001-%s.midi" % key_name.lower()
 
 
 if __name__ == '__main__':
