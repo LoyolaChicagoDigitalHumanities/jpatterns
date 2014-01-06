@@ -44,6 +44,12 @@ def title():
 def composer():
     return "Jerry Greene et al, Thiruvathukal"
 
+def pdf():
+    return "jazz01.pdf"
+
+def midi():
+    return "jazz01.midi"
+
 if __name__ == '__main__':
     score = get_score()
     common.main( get_score(), title(), composer(), 'jazz1.pdf')
