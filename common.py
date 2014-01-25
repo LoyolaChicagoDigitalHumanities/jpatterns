@@ -51,10 +51,11 @@ def get_lilypond_file(score, title, composer):
     lily = lilypondfiletools.make_basic_lilypond_file(score)
     lily_title = markuptools.Markup(r'\bold \sans "%s"' % title)
     lily_composer = schemetools.Scheme(composer)
-    lily.global_staff_size = 12
+    lily.global_staff_size = 16
     lily.header_block.title = lily_title
     lily.header_block.composer = lily_composer
-    lily.layout_block.ragged_right = True
+    lily.layout_block.ragged_right = False
+    lily.layout_block.indent = 0
     lily.paper_block.markup_system_spacing__basic_distance = 8
     lily.paper_block.paper_width = 180
     return lily
@@ -62,4 +63,3 @@ def get_lilypond_file(score, title, composer):
 def main(score, title, composer, filename):
     lilypond_file = get_lilypond_file(score, title, composer)
     save(lilypond_file, filename)
-    #show(lilypond_file)
