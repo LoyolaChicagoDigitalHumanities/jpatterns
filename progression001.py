@@ -75,7 +75,7 @@ def get_score(key_name):
     return score
 
 def title(key_name):
-    return "II-V-I Progression (in %s), Piano" % key_name
+    return "II-V-I Progression (starting in %s), Piano" % key_name
 
 def composer():
     return "Not Specified"

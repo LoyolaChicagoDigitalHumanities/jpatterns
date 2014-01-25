@@ -10,4 +10,5 @@ do
 	python $py_file
 done
 
-python progression001.py
+python progression001.py -c
+python progression001.py -f
