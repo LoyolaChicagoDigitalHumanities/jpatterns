@@ -42,13 +42,11 @@ This will change your prompt, indicating that you are now in the virtualenv.
 Check out Abjad from its repository:
 
 
-~~~
-(abjad)mininuevo:~ gkt$ git clone https://github.com/Abjad/abjad.git
-(abjad)mininuevo:~ gkt$ cd abjad
-(abjad)mininuevo:abjad gkt$ which python
-/Users/gkt/.env/abjad/bin/python
-(abjad)mininuevo:~ gkt$ python setup.py install
-~~~
+    (abjad)mininuevo:~ gkt$ git clone https://github.com/Abjad/abjad.git
+    (abjad)mininuevo:~ gkt$ cd abjad
+    (abjad)mininuevo:abjad gkt$ which python
+    /Users/gkt/.env/abjad/bin/python
+    (abjad)mininuevo:~ gkt$ python setup.py install
 
 Note: If you do not see python coming out of `~/.env/abjad/bin`, your virtualenv was not created successfully. This means that everything we do subsequently would attempt to install to your global Python setup, which is probably not what you want. Go back to the earlier steps and make sure you created a virtualenv successfully.
 
