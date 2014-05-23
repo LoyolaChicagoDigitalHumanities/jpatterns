@@ -9,24 +9,9 @@ You must install Lilypond using the installers provided on the abovementioned Li
 
 # Installation
 
-For now, I only provide installation instructions for OS X. The Linux setup is similar and is one I have tested but don't have time to document right now. Will hopefully get around to it soon.
+For now, I only provide installation instructions for OS X. The Linux setup is similar and is one I have tested but don't have time to document right now. Will hopefully get around to it soon. 
 
-### How do I get set up? ###
+1. If you aren't running MacPorts (http://macports.org) or HomeBrew (http://brew.sh), do it now.
 
-* Summary of set up
-* Configuration
-* Dependencies
-* Database configuration
-* How to run tests
-* Deployment instructions
+1. 
 
-### Contribution guidelines ###
-
-* Writing tests
-* Code review
-* Other guidelines
-
-### Who do I talk to? ###
-
-* Repo owner or admin
-* Other community or team contact
