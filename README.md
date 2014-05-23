@@ -11,7 +11,9 @@ You must install Lilypond using the installers provided on the abovementioned Li
 
 For now, I only provide installation instructions for OS X. The Linux setup is similar and is one I have tested but don't have time to document right now. Will hopefully get around to it soon. 
 
-1. If you aren't running MacPorts (http://macports.org) or HomeBrew (http://brew.sh), do it now.
+1. If you aren't running MacPorts (http://macports.org) or HomeBrew (http://brew.sh), do it now. I am using MacPorts, so I will be using the port command. HomeBrew uses brew. You'll likely be able to adapt what you see here:
 
-1. 
+1. Set up the desired version of Python 2.7 and/or 3.4. Abjad supports Python 2.7 but has recently been updated to support 3.4 (only when you have the latest version of Abjad from repository):
+
+   $ port install python27 py27-virtualenv
 
