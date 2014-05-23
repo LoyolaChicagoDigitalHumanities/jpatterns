@@ -97,5 +97,5 @@ My build script *assumes* that you have a virtualenv for abjad present in `~/.en
                 return;
         }
 
-    :::shell
+    :::text
         /bin/ls -l
