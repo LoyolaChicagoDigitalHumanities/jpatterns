@@ -67,7 +67,29 @@ Python 2.7.6 (default, Nov 18 2013, 15:12:51)
 [GCC 4.2.1 Compatible Apple LLVM 5.0 (clang-500.2.79)] on darwin
 Type "help", "copyright", "credits" or "license" for more information.
 >>> import abjad
+>>> abjad.__version_info__
+(2, 15)
 ~~~
 
+You may see a different version than 2.15 here but that is the next release number (for 2014).
 
+You should now be able to check out the jpatterns project and run the build script:
+
+~~~
+(abjad)mininuevo:~ gkt$ hg clone https://bitbucket.org/ctsdh/jpatterns
+(abjad)mininuevo:~ gkt$ cd jpatterns
+(abjad)mininuevo:~ gkt$ ./build.sh 
+Generating pattern jazz001.py
+Generating pattern jazz002.py
+Generating pattern jazz003.py
+Generating pattern jazz005.py
+Generating pattern jazz008.py
+Generating pattern jazz019.py
+Generating pattern jazz059.py
+Generating pattern jazz077.py
+Creating II-V-I in key of C
+Creating II-V-I in key of F
+~~~
+
+My build script *assumes* that you have a virtualenv for abjad present in `~/.env/abjad`. 
 
