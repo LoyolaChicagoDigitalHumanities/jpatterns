@@ -91,5 +91,4 @@ Creating II-V-I in key of C
 Creating II-V-I in key of F
 ~~~
 
-My build script *assumes* that you have a virtualenv for abjad present in `~/.env/abjad`. 
-
+My build script *assumes* that you have a virtualenv for abjad present in `~/.env/abjad`.
