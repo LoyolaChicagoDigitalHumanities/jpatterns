@@ -1,6 +1,6 @@
 #!/bin/bash
 
-[ -f ~/.env/sphinx/bin/activate ] && . ~/.env/sphinx/bin/activate
+[ -f ~/.env/abjad/bin/activate ] && . ~/.env/abjad/bin/activate
 
 mkdir -p ./build
 

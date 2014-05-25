@@ -92,7 +92,7 @@ class JazzScale(object):
 
     def compute_jazz_scale(self):
         pitches = self.pitch_iterator()
-        self.scale = [ pitches.next() for i in range(0, 15)]
+        self.scale = [ next(pitches) for i in range(0, 15)]
         self.initialize_pitches()
         self.respell()
 
@@ -199,6 +199,9 @@ class JazzScale(object):
             pitches.append(self.get_altered_pitch(scale_degree, alteration, octave_transposition))
 
         return pitches
+
+    def get_altered_pitches(self, pattern):
+        return [ n.pitch_number for n in self.get_altered_pitches_as_named(pattern)]
 
     # TODO: "deprecated" name used in examples...will clean up later
     get_named_pitches = get_pitches_as_named
