@@ -47,12 +47,15 @@ def composer():
 def pdf():
     return "jazz001.pdf"
 
+def png():
+    return "jazz001.png"
+
 def midi():
     return "jazz001.midi"
 
 if __name__ == '__main__':
     score = get_score()
-    common.main( get_score(), title(), composer(), pdf())
-    common.main( get_score(), title(), composer(), midi())
+    common.main( score, title(), composer(), pdf())
+    common.main( score, title(), composer(), midi())
 
 

@@ -13,7 +13,8 @@ def keys_in_fifths():
     for i in range(0, 12):
         yield 5*i % 12
 
-write_dir = os.path.join('.', 'build')
+unix_path = './build'.split('/')
+write_dir = os.path.join(*unix_path)
 
 class MissingOutputDir(Exception):
     def __init__(self, value):
@@ -34,6 +35,8 @@ def save(abjad_object, filename):
         (base, ext) = os.path.splitext(write_path)
         if ext == '.pdf':
             persist(abjad_object).as_pdf(write_path)
+        elif ext == '.png':
+            persist(abjad_object).as_png(write_path)
         elif ext == '.ly':
             persist(abjad_object).as_ly(write_path)
         elif ext == '.midi':
