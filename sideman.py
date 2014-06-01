@@ -44,6 +44,11 @@ def keys_in_fifths():
     for i in range(0, 12):
         yield 5*i % 12
 
+def keys_in_hmm():
+    for i in range(0, 3):
+        for j in range(0, 4):
+            yield 5*i + 3*j
+
 class JazzScale(object):
     KEY_SPELLINGS = [naturals, flats, sharps, flats, sharps, flats, flats, 
        sharps, flats, sharps, flats, sharps]
