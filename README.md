@@ -90,12 +90,3 @@ Creating II-V-I in key of F
 ~~~
 
 My build script *assumes* that you have a virtualenv for abjad present in `~/.env/abjad`.
-
-    :::java
-        function foo() {
-            int poo = 1;
-                return;
-        }
-
-    :::text
-        /bin/ls -l
