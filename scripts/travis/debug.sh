@@ -1,0 +1,2 @@
+ls
+which python
