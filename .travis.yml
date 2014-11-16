@@ -2,10 +2,11 @@ language: python
 python:
   - "2.7"
 before_install:
+  - sudo apt-get update
+install:
   - sh scripts/travis/install-texlive.sh
   - sh scripts/travis/install-lilypond.sh
   - sh scripts/travis/install-pip.sh
-install:
   - sh scripts/travis/install-abjad.sh
 script:
   - sh build.sh
