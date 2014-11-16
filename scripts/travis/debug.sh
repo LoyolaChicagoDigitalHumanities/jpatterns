@@ -1,2 +1,3 @@
+pwd
 ls
 which python
