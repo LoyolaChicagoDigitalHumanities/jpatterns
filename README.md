@@ -1,3 +1,7 @@
+# Build Status #
+
+[![Build Status](https://travis-ci.org/gkthiruvathukal/jpatterns.svg?branch=master)](https://travis-ci.org/gkthiruvathukal/jpatterns)
+
 # README #
 
 This is the patterns for jazz project, a collection of printable and playable patterns for learning the basics of jazz, composition in general, and ear training. This project is made possible by two awesome projects:
