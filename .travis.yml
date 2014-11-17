@@ -8,6 +8,5 @@ install:
   - sh scripts/travis/install-lilypond.sh
   - sh scripts/travis/install-pip.sh
   - sh scripts/travis/install-abjad-from-source.sh
-  - sh scripts/travis/debug.sh
 script:
   - sh build.sh
