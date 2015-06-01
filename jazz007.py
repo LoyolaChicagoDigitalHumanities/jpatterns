@@ -50,7 +50,7 @@ def pdf():
 def midi():
     return "jazz007.midi"
 
-if __name__ == '__main__':
+if __name__ == '__main__' and False:
     score = get_score()
     common.main( score, title(), composer(), pdf())
     common.main( score, title(), composer(), midi())
